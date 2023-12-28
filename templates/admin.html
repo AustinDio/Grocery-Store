@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .btn-color {
+      background-color: #0e1c36;
+      color: #fff;
+    }
+
+    .profile-image-pic {
+      height: 200px;
+      width: 200px;
+      object-fit: cover;
+    }
+
+    .cardbody-color {
+      background-color: #ebf2fa;
+    }
+
+    .login-heading {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    .error-msg {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="text-center">
+          <h1 class="text-center text-dark mt-5 login-heading">Admin Login</h1>
+        </div>
+        <div class="card my-5">
+          <form class="card-body cardbody-color p-lg-5" action="/loginadmin" method="POST" onsubmit="validateLogin(event)">
+            <div class="text-center">
+              <img src="https://static.vecteezy.com/system/resources/thumbnails/006/017/842/small_2x/customer-service-icon-user-with-laptop-computer-and-headphone-illustration-free-vector.jpg"
+                class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3" alt="profile">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="Username" placeholder="User Name">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" name="password" placeholder="Password">
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-color px-5 mb-5">Login</button>
+            </div>
+            <p class="error-msg" id="error-msg"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    function validateLogin(event) {
+      event.preventDefault(); 
+
+      var usernameInput = document.querySelector('input[name="Username"]');
+      var passwordInput = document.querySelector('input[name="password"]');
+      var errorMessage = document.getElementById('error-msg');
+
+      if (usernameInput.value === 'admin' && passwordInput.value === '123') {
+        window.location.href = 'http://127.0.0.1:5000/adminpage';
+      } else {
+        errorMessage.textContent = 'Incorrect Username or Password'; 
+        usernameInput.value = ''; 
+        passwordInput.value = ''; 
+      }
+    }
+  </script>
+</body>
+
+</html>

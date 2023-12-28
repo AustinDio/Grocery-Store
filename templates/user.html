@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grocery Shopping</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .product-card {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            max-width: 250px;
+        }
+
+        .product-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 150px;
+            margin-top: 10px;
+        }
+
+        .search-form {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .not-found-message {
+            font-weight: bold;
+            color: red;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Grocery Store</h1>
+    <div style="text-align: center;">
+        <a href="http://127.0.0.1:5000/cart"><input type="submit" value="Go to cart"></a>
+        <a href="http://127.0.0.1:5000"><input type="submit" value="Log Out"></a>
+    </div>
+
+    <form class="search-form" action="{{ url_for('user_page') }}" method="get">
+        <label for="search_product">Search Product:</label>
+        <input type="text" name="search_product" id="search_product" placeholder="Search by product name">
+        <input type="submit" value="Search">
+    </form>
+
+    <div class="product-container">
+        {% if products %}
+            {% for product in products %}
+                {% if product.quantity > 0 %}
+                    <div class="product-card">
+                        <img class="product-img" src="{{ product.image_url }}" alt="{{ product.name }}">
+                        <h3>{{ product.name }}</h3>
+                        <p>Category: {{ product.category.name }}</p> 
+                        <p>Price: ${{ product.price }}</p>
+                        <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="post">
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" name="quantity" value="1" min="1" max="{{ product.quantity }}" required>
+                            <input type="submit" value="Add to Cart">
+                        </form>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p class="not-found-message">No products found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

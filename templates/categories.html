@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .categories-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            justify-content: space-between;
+        }
+    
+        .category {
+            background-color: white;
+            width: calc(33.33% - 20px);
+            margin-bottom: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+        }
+        
+        .category h3 {
+            margin: 0;
+        }
+    
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .product {
+            width: calc(33.33% - 20px);
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .out-of-stock {
+            color: red;
+            font-weight: bold;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Inventory</h1>
+    <div style="text-align: right; padding: 0 20px;">
+        <a href="http://127.0.0.1:5000/add_category"><button>Add Category</button></a>
+        <a href="http://127.0.0.1:5000/add_product"><button>Add Product</button></a>
+        <a href="http://127.0.0.1:5000"><button>Log Out</button></a>
+    </div>
+    <form action="{{ url_for('show_categories') }}" method="get" style="padding: 20px;">
+        <input type="text" name="search" placeholder="Search by product name">
+        <button type="submit">Search</button>
+    </form>
+    <div class="categories-container">
+        {% if categories %}
+        {% for category in categories %}
+        <div class="category">
+            <div class="category-header">
+                <h3>{{ category.name }}</h3>
+                <form action="{{ url_for('delete_category', category_id=category.id) }}" method="post">
+                    <button type="submit">Delete</button>
+                </form>
+                <form action="{{ url_for('update_category', category_id=category.id) }}" method="get">
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+            <div class="product-container">
+                {% for product in category.products %}
+                {% if not product.added_by_user and (not search or (search.lower() in category.name.lower() or search.lower() in product.name.lower())) %}
+                <div class="product">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}" width="100" height="100">
+                    <p>{{ product.name }}</p>
+                    <p>Price: ${{ product.price }}{% if '/unit' in product.unit or '/kg' in product.unit %}{{ product.unit }}{% else %}/{{ product.unit }}{% endif %}</p>
+                    {% if product.expiry_date %}
+                        <p>Expiry Date: {{ product.expiry_date }}</p>
+                    {% endif %}
+                    {% if product.quantity > 0 %}
+                        <p>Quantity: {{ product.quantity }}</p>
+                        <form action="{{ url_for('delete_product', product_id=product.id) }}" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+                        <a href="{{ url_for('update_product', product_id=product.id) }}"><button>Update</button></a>
+                    {% else %}
+                        <p class="out-of-stock">OUT OF STOCK</p>
+                        <form action="{{ url_for('delete_product', product_id=product.id) }}" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+                        <a href="{{ url_for('update_product', product_id=product.id) }}"><button>Update</button></a>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% if not category.products and (not search or (search.lower() in category.name.lower())) %}
+                <p>No items found in this category.</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No categories found.</p>
+        {% endif %}
+        {% if categories and not found %}
+       
+        {% endif %}
+    </div>
+</body>
+</html>

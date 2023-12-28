@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Item</title>
+</head>
+<body>
+    <h1>Delete Item</h1>
+    <p>Are you sure you want to delete the following item?</p>
+    <table>
+        <tr>
+            <th>Category ID</th>
+            <th>Category Name</th>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Image URL</th>
+        </tr>
+        <tr>
+            <td>{{ item.category_id }}</td>
+            <td>{{ item.category_name }}</td>
+            <td>{{ item.product_id }}</td>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }}</td>
+            <td><a href="{{ item.image_url }}" target="_blank">Link</a></td>
+        </tr>
+    </table>
+    <form method="post">
+        <input type="submit" value="Confirm Delete">
+    </form>
+</body>
+</html>

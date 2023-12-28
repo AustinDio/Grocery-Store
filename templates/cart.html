@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grocery Store - Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        li {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            max-width: 250px;
+        }
+
+        h3 {
+            margin: 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            max-height: 150px;
+            margin-top: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <ul>
+        {% for cart_item in cart_items %}
+            <li>
+                <h3>{{ cart_item.product.name }}</h3>
+                <p>Category: {{ cart_item.product.category.name }}</p>
+                <p>Price: {{ cart_item.product.price }}</p>
+                <p>Quantity: {{ cart_item.quantity }}</p>
+                <img src="{{ cart_item.product.image_url }}" alt="{{ cart_item.product.name }}">
+                <form action="/remove_from_cart/{{ cart_item.id }}" method="POST">
+                    <input type="submit" value="Remove from Cart">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <h2>Total Price: {{ total }}</h2>
+    <form action="/checkout" method="POST">
+        <input type="submit" value="Proceed to Checkout">
+    </form>
+</body>
+</html>
+

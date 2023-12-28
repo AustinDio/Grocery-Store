@@ -19,8 +19,8 @@ Shopping Cart Management
 Order Placement
 
 # Requirements
-*alembic==1.11.1
-"*"blinker==1.6.2
+* alembic==1.11.1
+* blinker==1.6.2
 "*"click==8.1.6
 "*"colorama==0.4.6
 "*"distlib==0.3.6

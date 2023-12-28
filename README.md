@@ -1,4 +1,4 @@
-# Grocery-StoreGrocery Shopping Web Application
+# Grocery Shopping Web Application
 This is a web-based grocery shopping application built using Flask, a Python web framework. The application allows users to browse a catalog of products, add them to their shopping cart, and place orders. It also provides user authentication and category-based product filtering.
 
 # Prerequisites
